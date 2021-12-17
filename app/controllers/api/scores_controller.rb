@@ -16,9 +16,7 @@ module Api
     end
 
     def golfers
-      scores = Score.all.order(played_at: :desc, id: :desc).includes(:user).filter {
-        |score| score.user.id == params[:id].to_i
-      }
+      scores = Score.where(user_id: params[:id]).includes(:user).order(played_at: :desc, id: :desc)
       serialized_scores = scores.map(&:serialize)
 
       response = {
